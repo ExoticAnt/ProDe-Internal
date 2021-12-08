@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+{{ aux }}
+
+<h1>{{ torneo }}</h1>
+
+<h1>Mis Apuestas</h1>
+
+<form action="{% url 'mi_tarjeta' %}" method="post">
+    {% csrf_token %}
+    {{ apuestas.management_form }}
+    <table>
+    <tr><th>Partido</th><th>Goles 1</th><th>Goles 2</th></tr>
+    {% for form in apuestas %}
+        <tr>
+        {% for field in form %}
+            <td> {{ field }} </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+    <input type="submit" value="Actualizar" />
+
+</form>
+<a href ="{% url 'index' %}" >Volver</a>
+</body>
+</html>

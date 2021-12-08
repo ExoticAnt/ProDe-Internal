@@ -1,0 +1,12 @@
+
+    <form action="{% url 'index' %}" method="post">
+ 
+    {% csrf_token %}
+    {{ login_mini_form }}
+    {% if username %}
+        Bienvenido, {{ username }} [{{privs}}]
+        <input type="submit" value="Salir" />    
+    {% else %}
+        <input type="submit" value="Registrarse" />
+    {% endif %}
+</form>

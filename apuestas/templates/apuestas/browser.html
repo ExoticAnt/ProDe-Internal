@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    
+    * {
+    box-sizing: border-box;
+    }
+
+    .box {
+        float: left;
+        width: 33.33%;
+        padding: 10px;
+    }
+
+    .botonera {
+        float: left;
+        width: 20%;
+        padding: 20px;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="clearfix">
+{% include "apuestas/mini_login.html" %}
+</div>
+
+<div class="clearfix" style="background-color:#bbb">
+    {% if user.is_staff %}
+    <div class="botonera" style="background-color:#bbf">
+        <a href ="/apuestas/admin">Administrar</a>
+    </div>
+    {% endif %}
+
+    {% if torneo and user.is_authenticated %}
+    {% if torneo.abierto %}
+    <div class="botonera" style="background-color:#bbf">
+        <a href ="mi_tarjeta">Editar Apuesta </a>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% if user.is_staff %}
+    <div class="botonera" style="background-color:#bbf">
+        <a href ="torneo">Actualizar Torneo</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="clearfix">
+
+{% if torneo %}
+  <div class="box" style="background-color:#bbb">
+    <h1> {{ torneo.nombre }} </h1>
+    <table style="width:100%">
+
+    <tr><th>Partido</th></tr>
+
+    {% for partido in partidos %}
+        {% if partido.jugado %}
+            <tr><td> {{ partido.equipo_1.nombre }}({{ partido.goles_1 }}) - {{ partido.equipo_2.nombre }}({{ partido.goles_2 }})</td></tr>
+        {% else %}
+            <tr><td> {{ partido.equipo_1.nombre }} - {{ partido.equipo_2.nombre }}</td></tr>        
+        {% endif %}
+
+    {% endfor %}
+
+
+    </table>
+   </div>
+   
+<div class="box" style="background-color:#ccc">
+
+{% if apuestas %}
+    <h1>Mis Apuestas</h1>
+    <table style="width:100%">
+        <tr><th>Apuesta</th><th>Puntos</th></tr>
+            {% for apuesta in apuestas %}
+                <tr><td> {{ apuesta.partido.equipo_1.nombre }}({{ apuesta.goles_1 }}) - {{ apuesta.partido.equipo_2.nombre }}({{ apuesta.goles_2 }})</td><td> {{ apuesta.puntos }} pts.  </td></tr>
+            {% endfor %}
+    </table>
+
+    {% for tarjeta in tarjetas %}
+    <h2>Total de Puntos: {{ tarjeta.puntos }} </h2>
+    {% endfor %}
+
+{% else %}
+    <p>No hay apuestas</p>
+{% endif %}
+</div>
+
+{% else %}
+    <p>No hay torneos activos</p>
+{% endif %}
+
+<div class="box" style="background-color:#ddd">
+
+<h1>Ranking</h1>
+
+<table style="width:100%">
+    <tr><th>Participante</th><th>Puntos</th></tr>
+{% for r in ranking %}
+    <tr><td>{{ r.user.username }}</td><td>{{ r.puntos }}</td></tr>
+{% endfor %}
+
+</table>
+
+</div>
+</div>
+
+</body>
+</html>

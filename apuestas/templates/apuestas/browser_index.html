@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+{% include "svn_browser/mini_login.html" %}
+
+<h2>Repositorios disponibles:</h2>
+ 
+{% if entries %}
+<table style="width:100%">
+<tr><td>Nombre</td><td>Ubicación</td></tr>
+
+{% for entry in entries %}
+<tr><td>{{ entry.repo_name }}</td><td><a href="/browser/{{entry.repo_path}}">{{ entry.repo_path }}</a></td></tr>
+{% endfor %}
+
+</table>
+{% else %}
+    <p>No hay repositorios accesibles</p>
+{% endif %}
+</body>
+</html>
